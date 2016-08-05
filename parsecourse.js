@@ -48,73 +48,87 @@ function parseFromData(cell)
   }
 }
 
-function parseFromChild(cell)
+function parseFromChild(cell, recurseLevel)
 {
-  if (cell.childNodes !== null &&
-      cell.childNodes.length > 0)
+  var firstData = parseFromData(cell);
+
+  if (firstData !== undefined)
   {
-    var dataCell = cell.childNodes[0];
-    if (dataCell.childNodes !== undefined &&
-        dataCell.childNodes !== null &&
-        dataCell.childNodes.length > 0)
+    return firstData;
+  }
+
+  if (firstData === undefined && recurseLevel > 0)
+  {
+    if (cell.childNodes !== null &&
+        cell.childNodes !== undefined &&
+        cell.childNodes.length > 0)
     {
-      var dataElement = dataCell.childNodes[0];
-      if (dataElement.data !== undefined)
-      {
-        return dataElement.data.trim();
-      }
-      else
-      {
-        console.log('No data present on cell');
-      }
+      console.log(cell.childNodes[0]);
+      return parseFromChild(cell.childNodes[0], recurseLevel - 1);
     }
   }
 }
 
-var parseStartTime = parseFromData;
-var parseDuration = parseFromData;
-var parseClassName = parseFromChild;
-var parseTeacherName = function(cell)
+function makeParseFromChildFunction(recurseLevel)
 {
-  var teacherName = parseFromChild(cell);
-  if (teacherName === undefined &&
-      cell.childNodes !== null &&
-      cell.childNodes.length > 0)
-  {
-    return parseFromChild(cell.childNodes[0]);
-  }
-  else
-  {
-    return teacherName;
-  }
+  return function(cell) { return parseFromChild(cell, recurseLevel); };
 }
-var parseRoomName = parseFromData;
 
 var PARSER_MAP =
 {
-  'Start time': parseStartTime,
-  'Classes'   : parseClassName,
-  'Teacher'   : parseTeacherName,
-  'Room'      : parseRoomName,
-  'Duration'  : parseDuration,
-}
+  start: 
+  {
+    required: true,
+    column: [ 'Start time' ],
+    parser: parseFromData,
+  },
+  course:
+  {
+    required: true,
+    column: [ 'Classes' ],
+    parser: makeParseFromChildFunction(1),
+  },
+  teacher:
+  {
+    required: true,
+    column: [ 'Teacher', 'Yoga + Pilates Mat Teacher' ], 
+    parser: makeParseFromChildFunction(2),
+  },
+  duration:
+  {
+    required: true,
+    column: [ 'Duration' ],
+    parser: parseFromData,
+  },
+  room:
+  {
+    required: false,
+    column: [ 'Room' ],
+    parser: parseFromData,
+  },
+  locale:
+  {
+    required: false,
+    column: [ 'Location' ],
+    parser: parseFromData,
+  },
+};
 
-function makeBaseMap()
+function propNameOfColumnHeader(col)
 {
-  var baseMap = {};
   for (var prop in PARSER_MAP)
   {
-    if (PARSER_MAP.hasOwnProperty(prop))
+    var headers = PARSER_MAP[prop];
+    if (PARSER_MAP[prop].column.indexOf(col) !== -1)
     {
-      baseMap[prop] = null;
+      return prop;
     }
   }
-  return baseMap;
+  return '';
 }
 
 function makeColumnMap(headerRow)
 {
-  var baseMap = makeBaseMap();
   var map = {};
 
   for (var i = 0; i < headerRow.childNodes[0].childNodes.length; ++i)
@@ -124,10 +138,11 @@ function makeColumnMap(headerRow)
         item.childNodes.length > 0)
     {
       var data = item.childNodes[0].data;
-      if (baseMap.hasOwnProperty(data))
+      var propName = propNameOfColumnHeader(data);
+      if (propName !== undefined && propName !== "")
       {
-        console.log('Mapping for "'+data+'" is '+i);
-        map[i] = data;
+        console.log('Mapping for "'+data+'",property "'+propName+'", index '+i);
+        map[i] = propName;
       }
     }
   }
@@ -167,7 +182,7 @@ function isCourseValid(course)
 {
   for (var prop in PARSER_MAP)
   {
-    if (course.hasOwnProperty(prop) === false)
+    if (PARSER_MAP[prop].required && course.hasOwnProperty(prop) === false)
     {
       return false;
     }
@@ -177,7 +192,7 @@ function isCourseValid(course)
 
 function parseCourseStart(webCourse, currentDate)
 {
-  var courseStart = moment(webCourse['Start time'], 'HH:mm');
+  var courseStart = moment(webCourse['start'], 'HH:mm');
   if (courseStart.isValid())
   {
     courseStart.year(currentDate.year());
@@ -186,7 +201,7 @@ function parseCourseStart(webCourse, currentDate)
   }
   else
   {
-    console.log('Error parsing time from start time: ' + webCourse['Start time']);
+    console.log('Error parsing time from start time: ' + webCourse['start']);
   }
   return courseStart;
 }
@@ -198,7 +213,7 @@ function parseCourseEnd(webCourse, courseStart)
   var SECOND_NUMBER_LOCATION = 4; // needed for "1 hour & 15 minutes"
   var SECOND_TIME_TYPE_LOCATION = 5;
   var durationRegex = /(\d+) *([a-zA-Z]+)( & (\d+) *([a-zA-Z]+))?/;
-  var match = webCourse['Duration'].match(durationRegex);
+  var match = webCourse.duration.match(durationRegex);
 
   var courseEnd = courseStart.clone().add(
       Number(match[NUMBER_LOCATION]),
@@ -221,12 +236,13 @@ function dbCourseOfWebCourse(webCourse, currentDate, studio)
 {
   var dbCourse = 
   {
-    name: webCourse['Classes'],
+    name: webCourse['course'],
     start: null,
     end: null,
-    room: webCourse['Room'],
+    teacher: webCourse['teacher'],
     studio: studio.name,
-    teacher: webCourse['Teacher'],
+    room: webCourse['room'],
+    location: webCourse['location'],
     url: null,
   };
 
@@ -283,11 +299,11 @@ function makeJSONCourses(columnMap, tableRows, studio)
         if (columnMap[j] !== undefined)
         {
           var key = columnMap[j];
-          course[key] = PARSER_MAP[key](cell);
+          course[key] = PARSER_MAP[key].parser(cell);
         }
         else
         {
-          console.log('No mapping for column: ' + j);
+          //console.log('No mapping for column: ' + j);
         }
       }
       if (isCourseValid(course))
@@ -352,4 +368,4 @@ function loggerCallback(courses)
   console.log(courses);
 }
 
-exports.parsePage('4706.html', studioInfo, loggerCallback);
+//exports.parsePage('test_teacher.html', studioInfo, loggerCallback);
