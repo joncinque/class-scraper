@@ -74,7 +74,20 @@ function parseFromChild(cell)
 var parseStartTime = parseFromData;
 var parseDuration = parseFromData;
 var parseClassName = parseFromChild;
-var parseTeacherName = parseFromChild;
+var parseTeacherName = function(cell)
+{
+  var teacherName = parseFromChild(cell);
+  if (teacherName === undefined &&
+      cell.childNodes !== null &&
+      cell.childNodes.length > 0)
+  {
+    return parseFromChild(cell.childNodes[0]);
+  }
+  else
+  {
+    return teacherName;
+  }
+}
 var parseRoomName = parseFromData;
 
 var PARSER_MAP =
@@ -182,12 +195,21 @@ function parseCourseEnd(webCourse, courseStart)
 {
   var NUMBER_LOCATION = 1;
   var TIME_TYPE_LOCATION = 2;
-  var durationRegex = /(\d+) *(\D+)/;
+  var SECOND_NUMBER_LOCATION = 4; // needed for "1 hour & 15 minutes"
+  var SECOND_TIME_TYPE_LOCATION = 5;
+  var durationRegex = /(\d+) *([a-zA-Z]+)( & (\d+) *([a-zA-Z]+))?/;
   var match = webCourse['Duration'].match(durationRegex);
 
   var courseEnd = courseStart.clone().add(
       Number(match[NUMBER_LOCATION]),
       match[TIME_TYPE_LOCATION]);
+  if (match[SECOND_NUMBER_LOCATION] !== undefined &&
+      match[SECOND_TIME_TYPE_LOCATION] !== undefined)
+  {
+    courseEnd = courseEnd.add(
+        Number(match[SECOND_NUMBER_LOCATION]),
+        match[SECOND_TIME_TYPE_LOCATION]);
+  }
   if (courseEnd.isValid() === false)
   {
     console.log('Error parsing end time from duration: ' + webCourse['Duration']);
@@ -214,6 +236,29 @@ function dbCourseOfWebCourse(webCourse, currentDate, studio)
   return dbCourse;
 }
 
+function rowIsValid(row)
+{
+  var STRIKETHROUGH_TAG_LOCATION = 1;
+  if (row.childNodes === undefined || 
+      row.childNodes === null ||
+      row.childNodes.length === 0)
+  {
+    return false;
+  }
+  var firstCell = row.childNodes[0];
+  // test if strikethrough tag exists
+  if (firstCell.childNodes !== null &&
+      firstCell.childNodes.length > STRIKETHROUGH_TAG_LOCATION)
+  {
+    var tagCell = firstCell.childNodes[STRIKETHROUGH_TAG_LOCATION];
+    if (tagCell.tagName === 's' || tagCell.nodeName === 's')
+    {
+      return false;
+    }
+  }
+  return true;
+}
+
 function makeJSONCourses(columnMap, tableRows, studio)
 {
   var courses = [];
@@ -229,7 +274,7 @@ function makeJSONCourses(columnMap, tableRows, studio)
     {
       currentDate = nextDate;
     }
-    else
+    else if (rowIsValid(row))
     {
       var course = {};
       for (var j = 0; j < row.childNodes.length; ++j)
@@ -279,15 +324,17 @@ function processPage(htmlString, studio, callback)
   }
 }
 
-function parsePage(path, studio, callback)
+exports.parsePage = function (path, studio, callback)
 {
   fs.readFile(path, 'utf8', function(error, data) {
     if (error)
     {
-      throw error;
+      console.log(error);
     }
-
-    processPage(data, studio, callback);
+    else
+    {
+      processPage(data, studio, callback);
+    }
   });
 }
 
@@ -305,4 +352,4 @@ function loggerCallback(courses)
   console.log(courses);
 }
 
-//parsePage('23194.html', studioInfo, loggerCallback);
+exports.parsePage('4706.html', studioInfo, loggerCallback);

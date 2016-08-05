@@ -1,24 +1,38 @@
 var fs = require('fs');
-var getcourse = require('getcourse');
-var parsecourse = require('parsecourse');
+var phantomjs = require('phantomjs-prebuilt');
+//var getcourse = require('./getcourse'); // used by phantom file
+var parsecourse = require('./parsecourse');
 
-function finishedCallback(courses)
+function logCourse(course)
 {
-  console.log(courses);
+  console.log("{ name: '" + course.name + "'");
+  console.log("  , start: " + course.start.format('DD-MM-YYYY HH:mm'));
+  console.log("  , end: " + course.end.format('DD-MM-YYYY HH:mm'));
+  console.log("  , room: '" + course.room + "'");
+  console.log("  , studio: '" + course.studio + "'");
+  console.log("  , teacher: '" + course.teacher + "'");
+  console.log("  , url: '" + course.url + "'");
+  console.log("}");
 }
 
-function makePhantomCallback(studioInfo, finalCallback)
+function makeFinishedCallback(studio)
 {
-  return function(htmlFile)
+  return function (courses)
   {
-    parsecourse.parsePage(htmlFile, studioInfo, finalCallback);
+    console.log('Finished for studio: ' + studio.name);
+    courses.forEach(logCourse);
   }
 }
 
 function getCourses(studio)
 {
   var htmlFile = studio.studioid + '.html';
-  getcourse.scrapePage(studio.studioid, makePhantomCallback(studio, finishedCallback));
+  var program = phantomjs.exec('getcourse.js', studio.studioid);
+  //program.stdout.pipe(process.stdout)
+  //program.stderr.pipe(process.stderr)
+  program.on('exit', code => {
+    parsecourse.parsePage(htmlFile, studio, makeFinishedCallback(studio));
+  })
 }
 
 function getAllCourses()
@@ -29,8 +43,9 @@ function getAllCourses()
       throw error;
     }
     var studioInfo = JSON.parse(data);
-    for (var studio in studioInfo)
+    for (var index in studioInfo)
     {
+      var studio = studioInfo[index];
       if (studio.provider === 'MBO')
       {
         getCourses(studio);

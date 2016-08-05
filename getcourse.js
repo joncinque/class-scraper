@@ -1,7 +1,8 @@
 var fs = require('fs');
+var system = require('system');
 var webpage = require('webpage');
 
-function scrapePage(studioId, callback)
+function scrapePage(studioId)
 {
   const url = 'https://clients.mindbodyonline.com/classic/home?studioid='+studioId;
 
@@ -56,7 +57,6 @@ function scrapePage(studioId, callback)
       console.trace('Error loading table resource');
     }
     phantom.exit();
-    callback(path);
   }
 
   studiopage.onResourceRequested = function (request) {
@@ -128,4 +128,12 @@ function scrapePage(studioId, callback)
   studiopage.open(url);
 }
 
+if (system.args.length > 1)
+{
+  scrapePage(Number(system.args[1]));
+}
+else
+{
+  console.log('Not enough args provided: ' + system.args);
+}
 //scrapePage(23194);

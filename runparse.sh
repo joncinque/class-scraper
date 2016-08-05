@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
-cmd="nodejs parseclass.js"
+cmd="nodejs parsecourse.js"
 echo $cmd
 eval $cmd
