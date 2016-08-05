@@ -4,7 +4,8 @@ var webpage = require('webpage');
 
 function scrapePage(studioId)
 {
-  const url = 'https://clients.mindbodyonline.com/classic/home?studioid='+studioId;
+  const URL = 'https://clients.mindbodyonline.com/classic/home?studioid='+studioId;
+  const CLASS_PAGE = 'https://clients.mindbodyonline.com/classic/mainclass?fl=true&tabID=7';
 
   var studiopage = webpage.create();
   var tablepage = webpage.create();
@@ -92,10 +93,18 @@ function scrapePage(studioId)
     console.trace('  url: ' + currentUrl);
     if (status === 'success' && redirected === false)
     {
-      console.trace('Successful load, now redirecting to: ' + tableresource);
-      redirected = true;
-      tablepage.open(tableresource);
-      studiopage.close();
+      if (tableresource === null)
+      {
+        console.trace('Table resource not found, redirect to correct tab');
+        studiopage.open(CLASS_PAGE);
+      }
+      else
+      {
+        console.trace('Successful load, now redirecting to: ' + tableresource);
+        redirected = true;
+        tablepage.open(tableresource);
+        studiopage.close();
+      }
     }
   };
 
@@ -125,7 +134,7 @@ function scrapePage(studioId)
     console.error(msgStack.join('\n'));
   };
 
-  studiopage.open(url);
+  studiopage.open(URL);
 }
 
 if (system.args.length > 1)
@@ -136,4 +145,4 @@ else
 {
   console.log('Not enough args provided: ' + system.args);
 }
-//scrapePage(23194);
+//scrapePage(217848);

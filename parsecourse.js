@@ -2,30 +2,6 @@ var fs = require('fs');
 var moment = require('moment');
 var xmldom = require('xmldom');
 
-function dumpObject(obj, prefix)
-{
-  console.log('=====DUMPING OBJECT=====');
-  if (prefix === undefined)
-  {
-    prefix = "";
-  }
-  for (var prop in obj)
-  {
-    var val = obj[prop];
-    console.log(prefix + 'prop: ' + prop + ' val: ' + val);
-    if (prop === 'childNodes' && val !== null)
-    {
-      for (var i = 0; i < val.length; ++i)
-      {
-        if (prefix === "")
-        {
-          dumpObject(val.item(i), prefix + "  ");
-        }
-      }
-    }
-  }
-}
-
 function cleanupHtml(htmlString)
 {
   var cleanString = htmlString.replace(/&nbsp;/g,' ');
@@ -39,7 +15,7 @@ function parseFromData(cell)
   if (cell.childNodes !== null &&
       cell.childNodes.length > 0)
   {
-    var dataCell = cell.childNodes[0];
+    const dataCell = cell.childNodes[0];
     if (dataCell.data !== null &&
         dataCell.data !== undefined)
     {
@@ -50,8 +26,7 @@ function parseFromData(cell)
 
 function parseFromChild(cell, recurseLevel)
 {
-  var firstData = parseFromData(cell);
-
+  const firstData = parseFromData(cell);
   if (firstData !== undefined)
   {
     return firstData;
@@ -63,7 +38,6 @@ function parseFromChild(cell, recurseLevel)
         cell.childNodes !== undefined &&
         cell.childNodes.length > 0)
     {
-      console.log(cell.childNodes[0]);
       return parseFromChild(cell.childNodes[0], recurseLevel - 1);
     }
   }
@@ -74,7 +48,7 @@ function makeParseFromChildFunction(recurseLevel)
   return function(cell) { return parseFromChild(cell, recurseLevel); };
 }
 
-var PARSER_MAP =
+const PARSER_MAP =
 {
   start: 
   {
@@ -118,7 +92,7 @@ function propNameOfColumnHeader(col)
 {
   for (var prop in PARSER_MAP)
   {
-    var headers = PARSER_MAP[prop];
+    const headers = PARSER_MAP[prop];
     if (PARSER_MAP[prop].column.indexOf(col) !== -1)
     {
       return prop;
@@ -152,19 +126,19 @@ function makeColumnMap(headerRow)
 
 function parseDateFromRow(row)
 {
-  var DATE_LOCATION = 2; // MAGIC NUMBER
+  const DATE_LOCATION = 2; // MAGIC NUMBER
 
-  var firstCell = row.childNodes[0];
+  const firstCell = row.childNodes[0];
   if (firstCell.childNodes !== null &&
       firstCell.childNodes.length > 0)
   {
     // Pull out the date
-    var firstData = firstCell.childNodes[0];
+    const firstData = firstCell.childNodes[0];
     if (firstData.childNodes !== null &&
         firstData.childNodes.length > DATE_LOCATION)
     {
-      var dateElement = firstData.childNodes[DATE_LOCATION].data.trim();
-      var parsedDate = moment(dateElement, 'DD MMM YYYY');
+      const dateElement = firstData.childNodes[DATE_LOCATION].data.trim();
+      const parsedDate = moment(dateElement, 'DD MMM YYYY');
       if (parsedDate.isValid())
       {
         console.log('Current date: ' + parsedDate.format('DD MMM YYYY'));
@@ -208,12 +182,12 @@ function parseCourseStart(webCourse, currentDate)
 
 function parseCourseEnd(webCourse, courseStart)
 {
-  var NUMBER_LOCATION = 1;
-  var TIME_TYPE_LOCATION = 2;
-  var SECOND_NUMBER_LOCATION = 4; // needed for "1 hour & 15 minutes"
-  var SECOND_TIME_TYPE_LOCATION = 5;
-  var durationRegex = /(\d+) *([a-zA-Z]+)( & (\d+) *([a-zA-Z]+))?/;
-  var match = webCourse.duration.match(durationRegex);
+  const NUMBER_LOCATION = 1;
+  const TIME_TYPE_LOCATION = 2;
+  const SECOND_NUMBER_LOCATION = 4; // needed for "1 hour & 15 minutes"
+  const SECOND_TIME_TYPE_LOCATION = 5;
+  const durationRegex = /(\d+) *([a-zA-Z]+)( & (\d+) *([a-zA-Z]+))?/;
+  const match = webCourse.duration.match(durationRegex);
 
   var courseEnd = courseStart.clone().add(
       Number(match[NUMBER_LOCATION]),
@@ -254,19 +228,19 @@ function dbCourseOfWebCourse(webCourse, currentDate, studio)
 
 function rowIsValid(row)
 {
-  var STRIKETHROUGH_TAG_LOCATION = 1;
+  const STRIKETHROUGH_TAG_LOCATION = 1;
   if (row.childNodes === undefined || 
       row.childNodes === null ||
       row.childNodes.length === 0)
   {
     return false;
   }
-  var firstCell = row.childNodes[0];
+  const firstCell = row.childNodes[0];
   // test if strikethrough tag exists
   if (firstCell.childNodes !== null &&
       firstCell.childNodes.length > STRIKETHROUGH_TAG_LOCATION)
   {
-    var tagCell = firstCell.childNodes[STRIKETHROUGH_TAG_LOCATION];
+    const tagCell = firstCell.childNodes[STRIKETHROUGH_TAG_LOCATION];
     if (tagCell.tagName === 's' || tagCell.nodeName === 's')
     {
       return false;
@@ -277,9 +251,9 @@ function rowIsValid(row)
 
 function makeJSONCourses(columnMap, tableRows, studio)
 {
-  var courses = [];
-  var FIRST_DATA_ROW_LOCATION = 1; // MAGIC NUMBER
+  const FIRST_DATA_ROW_LOCATION = 1; // MAGIC NUMBER
 
+  var courses = [];
   var currentDate = null;
 
   for (var i = FIRST_DATA_ROW_LOCATION; i < tableRows.length; ++i)
@@ -295,9 +269,9 @@ function makeJSONCourses(columnMap, tableRows, studio)
       var course = {};
       for (var j = 0; j < row.childNodes.length; ++j)
       {
-        var cell = row.childNodes[j];
         if (columnMap[j] !== undefined)
         {
+          var cell = row.childNodes[j];
           var key = columnMap[j];
           course[key] = PARSER_MAP[key].parser(cell);
         }
@@ -323,17 +297,15 @@ function makeJSONCourses(columnMap, tableRows, studio)
 
 function processPage(htmlString, studio, callback)
 {
-  var cleanString = cleanupHtml(htmlString);
-  var parser = new xmldom.DOMParser();
-  var dom = parser.parseFromString(cleanString, 'text/html');
+  const cleanString = cleanupHtml(htmlString);
+  const parser = new xmldom.DOMParser();
+  const dom = parser.parseFromString(cleanString, 'text/html');
 
-  //var headerRow = dom.querySelector('.floatingHeaderRow');
-  var headerRow = dom.getElementsByTagName('thead');
-  var columnMap= makeColumnMap(headerRow[0]);
+  const headerRow = dom.getElementsByTagName('thead');
+  const columnMap = makeColumnMap(headerRow[0]);
 
-  //var tableRows = dom.querySelectorAll('.header,.evenRow,.oddRow');
-  var tableRows = dom.getElementsByTagName('tr');
-  var courses = makeJSONCourses(columnMap, tableRows, studio);
+  const tableRows = dom.getElementsByTagName('tr');
+  const courses = makeJSONCourses(columnMap, tableRows, studio);
   if (callback !== undefined)
   {
     callback(courses);
