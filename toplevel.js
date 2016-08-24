@@ -27,7 +27,7 @@ function makeFinishedCallback(studio)
 function getCourses(studio)
 {
   var htmlFile = studio.studioid + '.html';
-  var program = phantomjs.exec('getcourse.js', studio.studioid);
+  var program = phantomjs.exec('getcourse.js', studio.provider, studio.studioid);
   //program.stdout.pipe(process.stdout)
   //program.stderr.pipe(process.stderr)
   program.on('exit', code => {
@@ -58,4 +58,7 @@ function getAllCourses()
   });
 }
 
-getAllCourses();
+if (require.main === module)
+{
+  getAllCourses();
+}
