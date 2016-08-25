@@ -219,7 +219,8 @@ function dbCourseOfWebCourse(webCourse, currentDate, studio)
     studio: studio.name,
     room: webCourse['room'],
     location: webCourse['location'],
-    url: null,
+    url: studio.url,
+    area: studio.area,
   };
 
   dbCourse.start = parseCourseStart(webCourse, currentDate);
