@@ -26,8 +26,11 @@ function makeFinishedCallback(studio)
 
 function getCourses(studio, callback)
 {
-  var htmlFile = studio.studioid + '.html';
-  var program = phantomjs.run('getcourse.js', studio.provider, studio.studioid)
+  var htmlFile = studio.studioid + studio.locale + '.html';
+  var program = phantomjs.run('getcourse.js', 
+      studio.provider,
+      studio.studioid,
+      studio.locale)
     .then(program => {
       return parsecourse.parsePage(htmlFile, studio, callback);
     })

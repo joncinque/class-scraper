@@ -3,12 +3,28 @@
     "name": "Yotopia",
     "provider": "MBO",
     "studioid": 16311,
-    "area": "Central London"
+    "area": "Central London",
+    "locale": ""
   },
   {
     "name": "Triyoga",
     "provider": "MBO",
     "studioid": 1991,
-    "area": "Central London"
+    "area": "Central London",
+    "locale": "Camden"
+  },
+  {
+    "name": "Triyoga",
+    "provider": "MBO",
+    "studioid": 1991,
+    "area": "Central London",
+    "locale": "Chelsea"
+  },
+  {
+    "name": "Triyoga",
+    "provider": "MBO",
+    "studioid": 1991,
+    "area": "Central London",
+    "locale": "Soho"
   }
 ]
