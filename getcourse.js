@@ -160,7 +160,7 @@ function dumpClassTable(providerInfo, studioId, locale)
         var tableElement = studiopage.evaluate(function(tableCssClass) {
           return document.querySelector(tableCssClass);
         }, providerInfo.tableCssClass);
-        var path = studioId + '.html';
+        var path = studioId + locale + '.html';
         fs.write(path, tableElement.outerHTML, function(error) {
           if (error) {
             //console.error("Error writing:  " + error.message);

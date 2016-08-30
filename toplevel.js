@@ -12,10 +12,12 @@ function logCourse(course)
   console.log("  , studio: '" + course.studio + "'");
   console.log("  , teacher: '" + course.teacher + "'");
   console.log("  , url: '" + course.url + "'");
+  console.log("  , locale: '" + course.locale + "'");
+  console.log("  , area: '" + course.area + "'");
   console.log("}");
 }
 
-function makeFinishedCallback(studio)
+function makeDBCallback(studio)
 {
   return function(courses)
   {
@@ -24,10 +26,32 @@ function makeFinishedCallback(studio)
   }
 }
 
-function getCourses(studio, callback)
+function makeArrayCallback(studio)
+{
+  return function(courses)
+  {
+    console.log('Finished for studio: ' + studio.name);
+    courses.forEach(course => {
+      course.start = course.start.toDate();
+      course.end = course.end.toDate();
+    });
+    return courses;
+  }
+}
+
+function transformToJS(courseArray)
+{
+  courseArray.forEach(course => {
+    course.start = course.start.toDate();
+    course.end = course.end.toDate();
+  });
+  return courseArray;
+}
+
+function getCoursesAsync(studio, callback)
 {
   var htmlFile = studio.studioid + studio.locale + '.html';
-  var program = phantomjs.run('getcourse.js', 
+  return phantomjs.run('getcourse.js', 
       studio.provider,
       studio.studioid,
       studio.locale)
@@ -52,7 +76,7 @@ function getAllCourses(studioFile)
       var studio = studioInfo[index];
       if (studio.provider === 'MBO')
       {
-        getCourses(studio, makeFinishedCallback(studio));
+        getCoursesAsync(studio, makeDBCallback(studio));
       }
       else
       {
