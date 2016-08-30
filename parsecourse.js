@@ -184,6 +184,7 @@ function parseCourseStart(webCourse, currentDate)
 
 function parseCourseEnd(webCourse, courseStart)
 {
+  // SO MUCH MAGIC
   const NUMBER_LOCATION = 1;
   const TIME_TYPE_LOCATION = 2;
   const SECOND_NUMBER_LOCATION = 4; // needed for "1 hour & 15 minutes"
@@ -311,21 +312,27 @@ function parseMBOPage(htmlString, studio, callback)
   const courses = makeJSONCourses(columnMap, tableRows, studio);
   if (callback !== undefined)
   {
-    callback(courses);
+    return callback(courses);
+  }
+  else
+  {
+    return courses;
   }
 }
 
-exports.parsePage = function (path, studio, callback)
+exports.parsePage = function(path, studio, callback)
 {
-  fs.readFile(path, 'utf8', function(error, data) {
-    if (error)
-    {
-      console.log(error);
-    }
-    else
-    {
-      PARSER_FUNCTIONS[studio.provider](data, studio, callback);
-    }
+  return new Promise((resolve, reject) => {
+    fs.readFile(path, 'utf8', function(error, data) {
+      if (error)
+      {
+        reject(error);
+      }
+      else
+      {
+        resolve(PARSER_FUNCTIONS[studio.provider](data, studio, callback));
+      }
+    });
   });
 }
 

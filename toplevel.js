@@ -17,27 +17,28 @@ function logCourse(course)
 
 function makeFinishedCallback(studio)
 {
-  return function (courses)
+  return function(courses)
   {
     console.log('Finished for studio: ' + studio.name);
     courses.forEach(logCourse);
   }
 }
 
-function getCourses(studio)
+function getCourses(studio, callback)
 {
   var htmlFile = studio.studioid + '.html';
-  var program = phantomjs.exec('getcourse.js', studio.provider, studio.studioid);
-  //program.stdout.pipe(process.stdout)
-  //program.stderr.pipe(process.stderr)
-  program.on('exit', code => {
-    parsecourse.parsePage(htmlFile, studio, makeFinishedCallback(studio));
-  })
+  var program = phantomjs.run('getcourse.js', studio.provider, studio.studioid)
+    .then(program => {
+      return parsecourse.parsePage(htmlFile, studio, callback);
+    })
+    .then(data => {
+      return data;
+    });
 }
 
-function getAllCourses()
+function getAllCourses(studioFile)
 {
-  fs.readFile('studios.json', 'utf8', function (error, data) {
+  fs.readFile(studioFile, 'utf8', function (error, data) {
     if (error)
     {
       throw error;
@@ -48,7 +49,7 @@ function getAllCourses()
       var studio = studioInfo[index];
       if (studio.provider === 'MBO')
       {
-        getCourses(studio);
+        getCourses(studio, makeFinishedCallback(studio));
       }
       else
       {
@@ -60,5 +61,5 @@ function getAllCourses()
 
 if (require.main === module)
 {
-  getAllCourses();
+  getAllCourses(process.argv[2]);
 }
