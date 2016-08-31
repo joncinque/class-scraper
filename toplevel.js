@@ -54,7 +54,8 @@ function getCoursesAsync(studio, callback)
   return phantomjs.run('getcourse.js', 
       studio.provider,
       studio.studioid,
-      studio.locale)
+      studio.locale,
+      studio.redirectPage)
     .then(program => {
       return parsecourse.parsePage(htmlFile, studio, callback);
     })

@@ -1,18 +1,20 @@
 [
   {
-    "name": "The Light Centre Moorgate",
+    "name": "The Garuda Yoga and Pilates",
     "provider": "MBO",
-    "studioid": 20481,
-    "url": "http://www.lightcentremoorgate.co.uk/",
-    "locale": "Moorgate",
-    "area": "Bank"
+    "studioid": 24230,
+    "redirectPage":  "",
+    "url": "https://www.thegaruda.net/",
+    "locale": "",
+    "area": "North London"
   },
   {
-    "name": "The Light Centre Belgravia",
+    "name": "Good Vibes",
     "provider": "MBO",
-    "studioid": 20481,
-    "url": "http://www.lightcentrebelgravia.co.uk/",
-    "locale": "Belgravia",
+    "studioid": 1769,
+    "redirectPage":  "https://clients.mindbodyonline.com/classic/mainclass?fl=true&tabID=7",
+    "url": "http://www.goodvibesfitness.co.uk/",
+    "locale": "",
     "area": "Central London"
   }
 ]

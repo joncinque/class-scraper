@@ -264,7 +264,7 @@ function dbCourseOfWebCourse(webCourse, currentDate, studio)
     teacher: webCourse['teacher'],
     studio: studio.name,
     room: webCourse['room'],
-    location: webCourse['location'],
+    locale: studio.locale,
     url: studio.url,
     area: studio.area,
   };
