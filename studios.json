@@ -3,36 +3,120 @@
     "name": "Blue Cow Yoga",
     "provider": "MBO",
     "studioid": 23194,
+    "url": "http://bluecowyoga.com/",
+    "locale": "",
     "area": "Bank"
   },
   {
     "name": "Power Yoga Company",
     "provider": "MBO",
     "studioid": 4706,
+    "url": "http://thepoweryogaco.com/",
+    "locale": "",
     "area": "West London"
   },
   {
     "name": "Yoga Rise",
     "provider": "MBO",
     "studioid": 138949,
+    "url": "http://www.yogarise.london/",
+    "locale": "",
     "area": "South London"
   },
   {
     "name": "I Am Yoga",
     "provider": "MBO",
     "studioid": 217848,
+    "url": "http://iamyogalondon.com/",
+    "locale": "",
     "area": "Central London"
   },
   {
     "name": "Yotopia",
     "provider": "MBO",
     "studioid": 16311,
+    "url": "http://yotopia.co.uk/",
+    "locale": "",
     "area": "Central London"
   },
   {
-    "name": "Triyoga",
+    "name": "Life Centre Notting Hill",
+    "provider": "MBO",
+    "studioid": -765,
+    "url": "http://www.thelifecentre.com/",
+    "locale": "Notting Hill",
+    "area": "West London"
+  },
+  {
+    "name": "Life Centre Islington",
+    "provider": "MBO",
+    "studioid": -765,
+    "url": "http://www.thelifecentre.com/",
+    "locale": "Islington",
+    "area": "North London"
+  },
+  {
+    "name": "Triyoga Soho",
     "provider": "MBO",
     "studioid": 1991,
+    "url": "http://www.triyoga.co.uk/",
+    "locale": "Soho",
+    "area": "Central London"
+  },
+  {
+    "name": "Triyoga Camden",
+    "provider": "MBO",
+    "studioid": 1991,
+    "url": "http://www.triyoga.co.uk/",
+    "locale": "Camden",
+    "area": "North London"
+  },
+  {
+    "name": "Triyoga Covent Garden",
+    "provider": "MBO",
+    "studioid": 1991,
+    "url": "http://www.triyoga.co.uk/",
+    "locale": "Covent Garden",
+    "area": "Central London"
+  },
+  {
+    "name": "Triyoga Chelsea",
+    "provider": "MBO",
+    "studioid": 1991,
+    "url": "http://www.triyoga.co.uk/",
+    "locale": "Chelsea",
+    "area": "West London"
+  },
+  {
+    "name": "Indaba Yoga",
+    "provider": "MBO",
+    "studioid": 11974,
+    "url": "http://indabayoga.com/",
+    "locale": "",
+    "area": "Central London"
+  },
+  {
+    "name": "The Refinery E9",
+    "provider": "MBO",
+    "studioid": 208867,
+    "url": "http://www.therefinerye9.com/",
+    "locale": "",
+    "area": "East London"
+  },
+  {
+    "name": "The Light Centre Moorgate",
+    "provider": "MBO",
+    "studioid": 20481,
+    "url": "http://www.lightcentremoorgate.co.uk/",
+    "locale": "Moorgate",
+    "area": "Bank"
+  },
+  {
+    "name": "The Light Centre Belgravia",
+    "provider": "MBO",
+    "studioid": 20481,
+    "url": "http://www.lightcentrebelgravia.co.uk/",
+    "locale": "Belgravia",
     "area": "Central London"
   }
 ]
