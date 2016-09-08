@@ -50,11 +50,10 @@ function transformToJS(courseArray)
 
 function getCoursesAsync(studio, callback)
 {
-  var htmlFile = studio.studioid + studio.locale + '.html';
+  const htmlFile = Math.abs(studio.studioid) + '.html';
   return phantomjs.run('getcourse.js', 
       studio.provider,
       studio.studioid,
-      studio.locale,
       studio.redirectPage)
     .then(program => {
       return parsecourse.parsePage(htmlFile, studio, callback);
@@ -71,7 +70,7 @@ function getAllCourses(studioFile)
     {
       throw error;
     }
-    var studioInfo = JSON.parse(data);
+    const studioInfo = JSON.parse(data);
     for (var index in studioInfo)
     {
       var studio = studioInfo[index];

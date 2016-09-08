@@ -1,20 +1,56 @@
 [
   {
-    "name": "The Garuda Yoga and Pilates",
+    "name": "Triyoga",
     "provider": "MBO",
-    "studioid": 24230,
+    "studioid": 1991,
     "redirectPage":  "",
-    "url": "https://www.thegaruda.net/",
-    "locale": "",
-    "area": "North London"
+    "locales": 
+    {
+      "Soho":
+      {
+        "name": "Triyoga Soho",
+        "url": "http://www.triyoga.co.uk/",
+        "area": "Central London"
+      },
+      "Camden":
+      {
+        "name": "Triyoga Camden",
+        "url": "http://www.triyoga.co.uk/",
+        "area": "North London"
+      },
+      "Covent Garden":
+      {
+        "name": "Triyoga Covent Garden",
+        "url": "http://www.triyoga.co.uk/",
+        "area": "Central London"
+      },
+      "Chelsea":
+      {
+        "name": "Triyoga Chelsea",
+        "url": "http://www.triyoga.co.uk/",
+        "area": "West London"
+      }
+    }
   },
   {
-    "name": "Good Vibes",
+    "name": "Yogahaven",
     "provider": "MBO",
-    "studioid": 1769,
-    "redirectPage":  "https://clients.mindbodyonline.com/classic/mainclass?fl=true&tabID=7",
-    "url": "http://www.goodvibesfitness.co.uk/",
-    "locale": "",
-    "area": "Central London"
+    "studioid": 12354,
+    "redirectPage":  "",
+    "locales":
+    {
+      "Clapham":
+      {
+        "name": "Yogahaven Clapham",
+        "url": "http://www.yogahaven.co.uk/london-yoga/clapham/yoga",
+        "area": "South London"
+      },
+      "Islington":
+      {
+        "name": "Yogahaven Islington",
+        "url": "http://www.yogahaven.co.uk/london-yoga/islington/yoga",
+        "area": "North London"
+      }
+    }
   }
 ]
