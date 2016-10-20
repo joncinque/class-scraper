@@ -1,1 +1,0 @@
-../../.class-scraper/parsecourse.js
