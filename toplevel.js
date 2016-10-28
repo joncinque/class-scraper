@@ -6,6 +6,7 @@ var parsecourse = require('./parsecourse');
 function logCourse(course)
 {
   console.log("{ name: '" + course.name + "'");
+  console.log("  , style: '" + course.style + "'");
   console.log("  , start: " + course.start.format('DD-MM-YYYY HH:mm'));
   console.log("  , end: " + course.end.format('DD-MM-YYYY HH:mm'));
   console.log("  , room: '" + course.room + "'");
