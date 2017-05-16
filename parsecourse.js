@@ -533,6 +533,15 @@ exports.parsePage = (path, studio, callback) =>
   });
 }
 
+exports.makeParsePageEventEmitter = (studio, callback) =>
+{
+  return (client, path) => {
+    let htmlData = fs.readFileSync(path, 'utf8');
+    let jsonData = PARSER_FUNCTIONS[studio.provider](htmlData, studio, callback);
+    client._notifier.emit('finish-scraping', jsonData);
+  }
+}
+
 if (require.main === module)
 {
   // For testing

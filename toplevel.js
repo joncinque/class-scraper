@@ -1,7 +1,12 @@
-var fs = require('fs');
-var phantomjs = require('phantomjs-prebuilt');
+'use strict';
+
+const fs = require('fs');
+const phantomjs = require('phantomjs-prebuilt');
+const EventEmitter = require('events');
+
 //var getcourse = require('./getcourse'); // used by phantom file
-var parsecourse = require('./parsecourse');
+const parsecourse = require('./parsecourse');
+const chromegetcourse = require('./chromegetcourse');
 
 function logCourse(course)
 {
@@ -49,7 +54,7 @@ function transformToJS(courseArray)
   return courseArray;
 }
 
-function getCoursesAsync(studio, callback)
+function getCoursesPhantom(studio, callback)
 {
   const htmlFile = Math.abs(studio.studioid) + '.html';
   return phantomjs.run('getcourse.js', 
@@ -64,26 +69,38 @@ function getCoursesAsync(studio, callback)
     });
 }
 
+let getCoursesChrome = (studio, callback)=>
+{
+  const htmlFile = Math.abs(studio.studioid) + '.html';
+  return chromegetcourse.dumpCourseTable(
+      studio.provider,
+      studio.studioid,
+      studio.redirectPage
+      ).once('finish-dumping', 
+        parsecourse.makeParsePageEventEmitter(studio, callback));
+}
+
 function getAllCourses(studioFile)
 {
   fs.readFile(studioFile, 'utf8', function (error, data) {
-    if (error)
-    {
+    if (error) {
       throw error;
     }
     const studioInfo = JSON.parse(data);
-    for (var index in studioInfo)
-    {
-      var studio = studioInfo[index];
-      if (studio.provider === 'MBO')
-      {
-        getCoursesAsync(studio, makeDBCallback(studio));
+    //getCoursesChrome(studioInfo[1], makeDBCallback(studioInfo[1]));
+    let ee = new EventEmitter();
+    ee.on('finish-studio', (index)=>{
+      if (index < studioInfo.length) {
+        var studio = studioInfo[index];
+        getCoursesChrome(studio, makeDBCallback(studio)
+            ).once('finish-scraping', (data)=>{
+          ee.emit('finish-studio', ++index);
+        });
+      } else {
+        console.log('Scraping complete');
       }
-      else
-      {
-        console.log('Cannot process studio without provider: ' + studio);
-      }
-    }
+    });
+    ee.emit('finish-studio', 0);
   });
 }
 
