@@ -7,6 +7,7 @@ const EventEmitter = require('events');
 //var getcourse = require('./getcourse'); // used by phantom file
 const parsecourse = require('./parsecourse');
 const chromegetcourse = require('./chromegetcourse');
+const logger = require('./logger');
 
 function logCourse(course)
 {
@@ -82,26 +83,24 @@ let getCoursesChrome = (studio, callback)=>
 
 function getAllCourses(studioFile)
 {
-  fs.readFile(studioFile, 'utf8', function (error, data) {
-    if (error) {
-      throw error;
+  let data = fs.readFileSync(studioFile, 'utf8');
+  const studioInfo = JSON.parse(data);
+  //getCoursesChrome(studioInfo[1], makeDBCallback(studioInfo[1]));
+  let ee = new EventEmitter();
+  ee.on('finish-studio', (index)=>{
+    if (index < studioInfo.length) {
+      var studio = studioInfo[index];
+      getCoursesChrome(studio, makeDBCallback(studio)
+          ).once('finish-scraping', (data)=>{
+        ee.emit('finish-studio', ++index);
+      });
+    } else {
+      ee.emit('finish-all-scraping');
+      console.log('Scraping complete');
     }
-    const studioInfo = JSON.parse(data);
-    //getCoursesChrome(studioInfo[1], makeDBCallback(studioInfo[1]));
-    let ee = new EventEmitter();
-    ee.on('finish-studio', (index)=>{
-      if (index < studioInfo.length) {
-        var studio = studioInfo[index];
-        getCoursesChrome(studio, makeDBCallback(studio)
-            ).once('finish-scraping', (data)=>{
-          ee.emit('finish-studio', ++index);
-        });
-      } else {
-        console.log('Scraping complete');
-      }
-    });
-    ee.emit('finish-studio', 0);
   });
+  ee.emit('finish-studio', 0);
+  return ee;
 }
 
 if (require.main === module)
