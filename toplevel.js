@@ -4,7 +4,7 @@ const fs = require('fs');
 const phantomjs = require('phantomjs-prebuilt');
 const EventEmitter = require('events');
 
-//var getcourse = require('./getcourse'); // used by phantom file
+//const getcourse = require('./getcourse'); // used by phantom file
 const parsecourse = require('./parsecourse');
 const chromegetcourse = require('./chromegetcourse');
 const logger = require('./logger');
@@ -29,8 +29,16 @@ function makeFileLogger(fileStream)
     fileStream.write(', "url": "' + course.url + '"');
     fileStream.write(', "booking": "' + course.booking + '"');
     fileStream.write(', "postcode": "' + course.postcode + '"');
-    fileStream.write('}');
+    fileStream.write('} ');
   }
+}
+
+function logClasses(courses, outputFileStream)
+{
+  outputFileStream.cork();
+  let loggerFunc = makeFileLogger(outputFileStream);
+  courses.forEach(loggerFunc);
+  outputFileStream.uncork();
 }
 
 function makeFileCallback(studio, outputFileStream)
@@ -40,28 +48,6 @@ function makeFileCallback(studio, outputFileStream)
     logger.info('Finished for studio: ' + studio.name);
     courses.forEach(makeFileLogger(outputFileStream));
   }
-}
-
-function makeArrayCallback(studio)
-{
-  return function(courses)
-  {
-    logger.info('Finished for studio: ' + studio.name);
-    courses.forEach(course => {
-      course.start = course.start.toDate();
-      course.end = course.end.toDate();
-    });
-    return courses;
-  }
-}
-
-function transformToJS(courseArray)
-{
-  courseArray.forEach(course => {
-    course.start = course.start.toDate();
-    course.end = course.end.toDate();
-  });
-  return courseArray;
 }
 
 function getCoursesPhantom(studio, callback)
@@ -90,30 +76,24 @@ let getCoursesChrome = (studio, callback)=>
         parsecourse.makeParsePageEventEmitter(studio, callback));
 }
 
-function getAllCourses(studioFile, outputFile)
+function getAllCourses(studioFile, outputFileStream)
 {
   let data = fs.readFileSync(studioFile, 'utf8');
-  let outputFileStream = fs.createWriteStream(outputFile, {
-      flags: 'a' // 'a' means appending (old data will be preserved)
-  })
-  outputFileStream.write('[');
   const studioInfo = JSON.parse(data);
-  //getCoursesChrome(studioInfo[1], makeFileCallback(studioInfo[1]));
   let ee = new EventEmitter();
   ee.on('finish-studio', (index)=>{
     if (index < studioInfo.length) {
-      var studio = studioInfo[index];
-      getCoursesChrome(studio, makeFileCallback(studio, outputFileStream)
+      let studio = studioInfo[index];
+      getCoursesChrome(studio
           ).once('finish-scraping', (data)=>{
+            logClasses(data, outputFileStream);
+            logger.info('Finished for studio: ' + studio.name);
             ee.emit('finish-studio', ++index);
           }).once('error', (data)=>{
             ee.emit('finish-studio', ++index);
           });
     } else {
       ee.emit('finish-all-scraping');
-      logger.info('Scraping complete');
-      outputFileStream.write(']');
-      outputFileStream.close();
     }
   });
   ee.emit('finish-studio', 0);
@@ -122,5 +102,14 @@ function getAllCourses(studioFile, outputFile)
 
 if (require.main === module)
 {
-  getAllCourses(process.argv[2], process.argv[3]);
+  let outputFileStream = fs.createWriteStream(process.argv[3], {
+      flags: 'a' // 'a' means appending (old data will be preserved)
+  })
+  outputFileStream.write('[');
+  let e = getAllCourses(process.argv[2], outputFileStream);
+  e.once('finish-all-scraping', ()=>{
+    logger.info('Scraping complete');
+    outputFileStream.write(']');
+    outputFileStream.end();
+  });
 }
