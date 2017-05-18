@@ -26,7 +26,22 @@ exports.dumpCourseTable = (providerName, studioId, extraString) =>
         // Lots of pages get loaded, so give some extra time
         await sleep(5000);
 
+        if (verbose) {
+          const {data} = await Page.captureScreenshot();
+          fs.writeFileSync('page0.png', Buffer.from(data, 'base64'));
+        }
+
         let topNode = await DOM.getDocument();
+        // See if a captcha got triggered
+        let captchaNode = await DOM.querySelector({
+          nodeId: topNode.root.nodeId,
+          selector: '#funcaptcha'
+        });
+        if (captchaNode.nodeId !== 0) {
+          client._notifier.emit('error');
+          throw 'Captcha triggered';
+        }
+
         // Check the table exists
         let tableViewNode = await DOM.querySelector({
           nodeId: topNode.root.nodeId,
@@ -92,9 +107,9 @@ exports.dumpCourseTable = (providerName, studioId, extraString) =>
           console.log('Updated location ['+updatedLocation+']');
         }
 
-        if (updatedLocation || updatedView || updatedTab) {
-          await Runtime.evaluate({expression: "setTimeout(()=>{}, 5000);"});
-        }
+        //if (updatedLocation || updatedView || updatedTab) {
+        //  await Runtime.evaluate({expression: "setTimeout(()=>{}, 5000);"});
+        //}
         // Get the table
         let tableNode = await DOM.querySelector({
           nodeId: topNode.root.nodeId,
@@ -112,11 +127,15 @@ exports.dumpCourseTable = (providerName, studioId, extraString) =>
         await client.close();
         client._notifier.emit('finish-dumping', client, Math.abs(studioId) + '.html');
       } catch (err) {
-        console.error(err);
+        if (err) {
+          console.error(err);
+        }
         await client.close();
       }
   }).on('error', (err) => {
-    console.error(err);
+    if (err) {
+      console.error(err);
+    }
     console.error('Problem with studio id [' + studioId + ']')
   });
 }

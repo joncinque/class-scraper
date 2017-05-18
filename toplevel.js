@@ -92,8 +92,10 @@ function getAllCourses(studioFile)
       var studio = studioInfo[index];
       getCoursesChrome(studio, makeDBCallback(studio)
           ).once('finish-scraping', (data)=>{
-        ee.emit('finish-studio', ++index);
-      });
+            ee.emit('finish-studio', ++index);
+          }).once('error', (data)=>{
+            ee.emit('finish-studio', ++index);
+          });
     } else {
       ee.emit('finish-all-scraping');
       logger.log('Scraping complete');
