@@ -3,6 +3,7 @@
 const CDP = require('chrome-remote-interface');
 const fs = require('fs');
 const verbose = false;
+const logger = require('./logger');
 
 function sleep (milliseconds = 5000) {
   return new Promise(resolve => setTimeout(() => resolve(), milliseconds))
@@ -17,7 +18,7 @@ exports.dumpCourseTable = (providerName, studioId, extraString) =>
   return CDP(options, async (client) => {
       const {Page, DOM, Runtime} = client;
       try {
-        console.log('Starting studio id [' + studioId + ']')
+        logger.info('Starting studio id [' + studioId + ']')
         await Page.enable();
         await DOM.enable();
         await Runtime.enable();
@@ -61,7 +62,7 @@ exports.dumpCourseTable = (providerName, studioId, extraString) =>
         }
 
         if (verbose) {
-          console.log('Change to class tab ['+updatedTab+']');
+          logger.info('Change to class tab ['+updatedTab+']');
         }
 
         // Check the view
@@ -83,7 +84,7 @@ exports.dumpCourseTable = (providerName, studioId, extraString) =>
           }
         }
         if (verbose) {
-          console.log('Updated view mode ['+updatedView+']');
+          logger.info('Updated view mode ['+updatedView+']');
         }
 
         // Check the location
@@ -104,7 +105,7 @@ exports.dumpCourseTable = (providerName, studioId, extraString) =>
           }
         }
         if (verbose) {
-          console.log('Updated location ['+updatedLocation+']');
+          logger.info('Updated location ['+updatedLocation+']');
         }
 
         //if (updatedLocation || updatedView || updatedTab) {
@@ -119,7 +120,7 @@ exports.dumpCourseTable = (providerName, studioId, extraString) =>
           nodeId: tableNode.nodeId
         });
         fs.writeFileSync(Math.abs(studioId) + '.html', tableHTML.outerHTML);
-        console.log('Dumped table for studio [' + studioId +']');
+        logger.info('Dumped table for studio [' + studioId +']');
         if (verbose) {
           const {data} = await Page.captureScreenshot();
           fs.writeFileSync('tablepage.png', Buffer.from(data, 'base64'));
@@ -128,15 +129,15 @@ exports.dumpCourseTable = (providerName, studioId, extraString) =>
         client._notifier.emit('finish-dumping', client, Math.abs(studioId) + '.html');
       } catch (err) {
         if (err) {
-          console.error(err);
+          logger.error(err);
         }
         await client.close();
       }
   }).on('error', (err) => {
     if (err) {
-      console.error(err);
+      logger.error(err);
     }
-    console.error('Problem with studio id [' + studioId + ']')
+    logger.error('Problem with studio id [' + studioId + ']')
   });
 }
 
