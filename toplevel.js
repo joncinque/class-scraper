@@ -76,10 +76,31 @@ let getCoursesChrome = (studio, callback)=>
         parsecourse.makeParsePageEventEmitter(studio, callback));
 }
 
-function getAllCourses(studioFile, outputFileStream)
+function getAllCourses(studioFile, outputFile, resumeFromId)
 {
   let data = fs.readFileSync(studioFile, 'utf8');
+  let outputFileStream = fs.createWriteStream(outputFile, {
+      flags: 'a' // 'a' means appending (old data will be preserved)
+  });
+
+  if (resumeFromId) {
+    sep = ',\n';
+  } else {
+    outputFileStream.write('[');
+  }
+
   const studioInfo = JSON.parse(data);
+  let index = 0;
+  if (resumeFromId) {
+    logger.info('Looking for id: ' + resumeFromId);
+    for (let i in studioInfo) {
+      if (studioInfo[i].studioid == resumeFromId) {
+        logger.info('Starting from index: ' + i);
+        index = i;
+        break;
+      }
+    }
+  }
   let ee = new EventEmitter();
   ee.on('finish-studio', (index)=>{
     if (index < studioInfo.length) {
@@ -96,20 +117,11 @@ function getAllCourses(studioFile, outputFileStream)
       ee.emit('finish-all-scraping');
     }
   });
-  ee.emit('finish-studio', 0);
+  ee.emit('finish-studio', index);
   return ee;
 }
 
 if (require.main === module)
 {
-  let outputFileStream = fs.createWriteStream(process.argv[3], {
-      flags: 'a' // 'a' means appending (old data will be preserved)
-  })
-  outputFileStream.write('[');
-  let e = getAllCourses(process.argv[2], outputFileStream);
-  e.once('finish-all-scraping', ()=>{
-    logger.info('Scraping complete');
-    outputFileStream.write(']');
-    outputFileStream.end();
-  });
+  getAllCourses(process.argv[2], process.argv[3], process.argv[4]);
 }
