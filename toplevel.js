@@ -105,18 +105,33 @@ function getAllCourses(studioFile, outputFile, resumeFromId)
   ee.on('finish-studio', (index)=>{
     if (index < studioInfo.length) {
       let studio = studioInfo[index];
-      getCoursesChrome(studio
-          ).once('finish-scraping', (data)=>{
-            logClasses(data, outputFileStream);
-            logger.info('Finished for studio: ' + studio.name);
-            ee.emit('finish-studio', ++index);
-          }).once('error', (data)=>{
-            ee.emit('finish-studio', ++index);
-          });
+      try {
+        getCoursesChrome(studio
+            ).once('finish-scraping', (data)=>{
+              logClasses(data, outputFileStream);
+              logger.info('Finished for studio: ' + studio.name);
+              ee.emit('finish-studio', ++index);
+            }).once('error', (data)=>{
+              ee.emit('finish-studio', ++index);
+            });
+      } catch (err) {
+        logger.error('Scraping failed, trying once more');
+        getCoursesChrome(studio
+            ).once('finish-scraping', (data)=>{
+              logClasses(data, outputFileStream);
+              logger.info('Finished for studio: ' + studio.name);
+              ee.emit('finish-studio', ++index);
+            }).once('error', (data)=>{
+              ee.emit('finish-studio', ++index);
+            });
+      }
     } else {
-      ee.emit('finish-all-scraping');
+      outputFileStream.cork();
       outputFileStream.write(']');
-      outputFileStream.close();
+      outputFileStream.uncork();
+      logger.info('Finished all scraping');
+      outputFileStream.end();
+      ee.emit('finish-all-scraping');
     }
   });
   ee.emit('finish-studio', index);
