@@ -24,12 +24,22 @@ then
   exit $rc
 fi
 
+#echo 'Replacing dates for mongoimport'
+#cp courses.json courses.json.bak
+#sed -i 's/"start": \("[^"]*"\)/"start": ISODate(\1)/g' courses.json.bak
+#sed -i 's/"end": \("[^"]*"\)/"end": ISODate(\1)/g' courses.json.bak
+#sed -i 's/,$//' courses.json.bak
+
 echo 'Killing Chrome'
 kill -9 $pid
 
-echo 'Uploading results file'
-echo $PASSWORD | sshpass -p $PASSWORD ssh aggregate@$IP sudo -S chmod 666 /home/aggregate/bundle/programs/server/assets/app/courses.json
+echo 'Uploading mongo import file'
+sshpass -p $PASSWORD scp courses.json aggregate@$IP:/home/aggregate/courses.json
 
-sshpass -p $PASSWORD scp courses.json aggregate@$IP:/home/aggregate/bundle/programs/server/assets/app/courses.json
+#echo 'Uploading web import file'
+#echo $PASSWORD | sshpass -p $PASSWORD ssh aggregate@$IP sudo -S chmod 666 /home/aggregate/bundle/programs/server/assets/app/courses.json
 
-echo 'All done, upload onto the database from web interface'
+#sshpass -p $PASSWORD scp courses.json aggregate@$IP:/home/aggregate/bundle/programs/server/assets/app/courses.json
+
+echo 'All done, import into the database'
+sshpass -p $PASSWORD ssh aggregate@$IP mongoimport -c courses -d aggregate --file /home/aggregate/courses.json --upsertFields name,start,studio,style,postcode
