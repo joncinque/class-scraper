@@ -42,4 +42,4 @@ sshpass -p $PASSWORD scp courses.json aggregate@$IP:/home/aggregate/courses.json
 #sshpass -p $PASSWORD scp courses.json aggregate@$IP:/home/aggregate/bundle/programs/server/assets/app/courses.json
 
 echo 'All done, import into the database'
-sshpass -p $PASSWORD ssh aggregate@$IP mongoimport -c courses -d aggregate --file /home/aggregate/courses.json --upsertFields name,start,studio,style,postcode
+sshpass -p $PASSWORD ssh aggregate@$IP mongoimport -c courses -d aggregate --file /home/aggregate/courses.json --upsertFields name,start,studio,style,postcode,timezone

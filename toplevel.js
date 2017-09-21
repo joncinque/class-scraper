@@ -41,6 +41,7 @@ function makeFileLogger(fileStream)
     fileStream.write(', "url": "' + course.url + '"');
     fileStream.write(', "booking": "' + course.booking + '"');
     fileStream.write(', "postcode": "' + course.postcode + '"');
+    fileStream.write(', "timezone": "' + course.timezone + '"');
     fileStream.write('}');
   }
 }
