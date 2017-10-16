@@ -47,29 +47,12 @@
     "studioid": 36253,
     "redirectPage":  "",
     "timezone": "Europe/London",
-    "locales":
+    "locale":
     {
-      "Yogacentric":
-      {
-        "name": "Yoga Centric",
-        "url": "http://www.yogacentric.co.uk/",
-        "booking": "https://clients.mindbodyonline.com/classic/home?studioid=36253",
-        "postcode": "N"
-      },
-      "Centric: 3 Tribes":
-      {
-        "name": "Centric:3Tribes",
-        "url": "http://www.3tribes.co.uk/",
-        "booking": "https://clients.mindbodyonline.com/classic/home?studioid=36253",
-        "postcode": "N"
-      },
-      "Muswell Hill":
-      {
-        "name": "Yogacentric: Muswell Hill",
-        "url": "http://www.yogacentric.co.uk/",
-        "booking": "https://clients.mindbodyonline.com/classic/home?studioid=36253",
-        "postcode": "N"
-      }
+      "name": "Centric",
+      "url": "http://www.yogacentric.co.uk/",
+      "booking": "https://clients.mindbodyonline.com/classic/home?studioid=36253",
+      "postcode": "N"
     }
   },
   {
@@ -310,6 +293,34 @@
     }
   },
   {
+    "name": "Jiva Health",
+    "provider": "MBO",
+    "studioid": 33817,
+    "redirectPage":  "",
+    "timezone": "Europe/London",
+    "locale":
+    {
+      "name": "Jiva Health",
+      "url": "http://www.jivahealth.co.uk/",
+      "booking": "https://clients.mindbodyonline.com/classic/home?studioid=33817",
+      "postcode": "SW"
+    }
+  },
+  {
+    "name": "Leyton Yoga",
+    "provider": "MBO",
+    "studioid": 176823,
+    "redirectPage":  "",
+    "timezone": "Europe/London",
+    "locale":
+    {
+      "name": "Leyton Yoga",
+      "url": "http://www.leytonyoga.com/",
+      "booking": "https://clients.mindbodyonline.com/classic/home?studioid=176823",
+      "postcode": "E"
+    }
+  },
+  {
     "name": "The Life Centre",
     "provider": "MBO",
     "studioid": -765,
@@ -435,6 +446,20 @@
       "url": "https://www.oneyogalondon.com/",
       "booking": "https://clients.mindbodyonline.com/classic/home?studioid=260779",
       "postcode": "N"
+    }
+  },
+  {
+    "name": "Paper Dress Yoga",
+    "provider": "MBO",
+    "studioid": 441481,
+    "redirectPage":  "",
+    "timezone": "Europe/London",
+    "locale": 
+    {
+      "name": "Paper Dress Yoga",
+      "url": "https://www.paperdressyoga.co.uk/",
+      "booking": "https://clients.mindbodyonline.com/classic/home?studioid=441481",
+      "postcode": "E"
     }
   },
   {
