@@ -5,7 +5,7 @@ const fs = require('fs');
 const verbose = false;
 const logger = require('./logger');
 
-const GET_NEXT_WEEK = true;
+const GET_NEXT_WEEK = false;
 
 function sleep (milliseconds = 5000) {
   return new Promise(resolve => setTimeout(() => resolve(), milliseconds))
