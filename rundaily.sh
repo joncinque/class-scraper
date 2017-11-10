@@ -22,6 +22,13 @@ cmd="nodejs $BASEDIR/toplevel.js $BASEDIR/studios.json $coursefile"
 echo "$cmd"
 eval "$cmd"
 
-echo 'All done, import into the database'
-upsertfields="name,start,studio,style,postcode,timezone"
-mongoimport -c courses -d aggregate --file "$coursefile" --upsertFields "$upsertfields"
+if [[ $? -eq 0 ]]
+then
+  echo 'All done, removing previous later values'
+  mongo aggregate --eval 'db.courses.remove({start: { $gt: new Date() } })'
+  echo 'Inserting new ones'
+  upsertfields="name,start,studio,style,postcode,timezone"
+  mongoimport -c courses -d aggregate --file "$coursefile" --upsertFields "$upsertfields"
+else
+  echo 'Something went wrong, holding off on importing'
+fi
