@@ -1,19 +1,5 @@
 [
   {
-    "name": "Barbican Yoga Cave",
-    "provider": "MBO",
-    "studioid": 253770,
-    "redirectPage":  "",
-    "timezone": "Europe/London",
-    "locale":
-    {
-      "name": "Barbican Yoga Cave",
-      "url": "http://barbicanyogacave.com/",
-      "booking": "https://clients.mindbodyonline.com/classic/home?studioid=253770",
-      "postcode": "EC"
-    }
-  },
-  {
     "name": "Battersea Yoga",
     "provider": "MBO",
     "studioid": 83692,

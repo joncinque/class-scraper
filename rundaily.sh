@@ -22,7 +22,7 @@ cmd="nodejs $BASEDIR/toplevel.js $BASEDIR/studios.json $coursefile"
 echo "$cmd"
 eval "$cmd"
 
-if [[ $? -eq 0 ]]
+if [[ -s $coursefile ]]
 then
   echo 'All done, removing previous later values'
   mongo aggregate --eval 'db.courses.remove({start: { $gt: new Date() } })'
