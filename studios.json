@@ -28,17 +28,25 @@
     }
   },
   {
-    "name": "Centric",
+    "name": "3Tribes",
     "provider": "MBO",
     "studioid": 36253,
     "redirectPage":  "",
     "timezone": "Europe/London",
-    "locale":
+    "locales":
     {
-      "name": "Centric",
-      "url": "http://www.yogacentric.co.uk/",
-      "booking": "https://clients.mindbodyonline.com/classic/home?studioid=36253",
-      "postcode": "N"
+      "3Tribes": {
+        "name": "3Tribes Crouch End",
+        "url": "https://www.3tribes.co.uk/",
+        "booking": "https://clients.mindbodyonline.com/classic/home?studioid=36253",
+        "postcode": "N"
+      },
+      "Borough": {
+        "name": "3Tribes Borough",
+        "url": "https://www.3tribes.co.uk/",
+        "booking": "https://clients.mindbodyonline.com/classic/home?studioid=36253",
+        "postcode": "SE"
+      }
     }
   },
   {
@@ -218,22 +226,12 @@
     "studioid": 1769,
     "redirectPage":  "https://clients.mindbodyonline.com/classic/mainclass?fl=true&tabID=7",
     "timezone": "Europe/London",
-    "locales": 
+    "locale": 
     {
-      "Covent Garden":
-      {
-        "name": "Good Vibes Covent Garden",
-        "url": "http://www.goodvibesfitness.co.uk/",
-        "booking": "https://clients.mindbodyonline.com/classic/home?studioid=1769",
-        "postcode": "WC"
-      },
-      "Fitzrovia":
-      {
-        "name": "Good Vibes Fitzrovia",
-        "url": "http://www.goodvibesfitness.co.uk/",
-        "booking": "https://clients.mindbodyonline.com/classic/home?studioid=1769",
-        "postcode": "W"
-      }
+      "name": "Good Vibes Fitzrovia",
+      "url": "http://www.goodvibesfitness.co.uk/",
+      "booking": "https://clients.mindbodyonline.com/classic/home?studioid=1769",
+      "postcode": "W"
     }
   },
   {
@@ -379,44 +377,191 @@
       "MoreYoga Aldgate":
       {
         "name": "More Yoga Aldgate",
-        "url": "http://www.morefit.co.uk/moreyoga/",
+        "url": "https://www.moreyoga.co.uk/",
         "booking": "https://clients.mindbodyonline.com/classic/home?studioid=256292",
         "postcode": "E"
+      },
+      "MoreYoga Angel":
+      {
+        "name": "More Yoga Angel",
+        "url": "https://www.moreyoga.co.uk/",
+        "booking": "https://clients.mindbodyonline.com/classic/home?studioid=256292",
+        "postcode": "N"
+      },
+      "MoreYoga Balham":
+      {
+        "name": "More Yoga Balham",
+        "url": "https://www.moreyoga.co.uk/",
+        "booking": "https://clients.mindbodyonline.com/classic/home?studioid=256292",
+        "postcode": "SW"
+      },
+      "MoreYoga Bermondsey":
+      {
+        "name": "More Yoga Bermondsey",
+        "url": "https://www.moreyoga.co.uk/",
+        "booking": "https://clients.mindbodyonline.com/classic/home?studioid=256292",
+        "postcode": "SE"
       },
       "MoreYoga Brixton":
       {
         "name": "More Yoga Brixton",
-        "url": "http://www.morefit.co.uk/moreyoga/",
+        "url": "https://www.moreyoga.co.uk/",
         "booking": "https://clients.mindbodyonline.com/classic/home?studioid=256292",
         "postcode": "SW"
+      },
+      "MoreYoga Caledonian Road":
+      {
+        "name": "More Yoga Caledonian Road",
+        "url": "https://www.moreyoga.co.uk/",
+        "booking": "https://clients.mindbodyonline.com/classic/home?studioid=256292",
+        "postcode": "N"
       },
       "MoreYoga Camden":
       {
         "name": "More Yoga Camden",
-        "url": "http://www.morefit.co.uk/moreyoga/",
+        "url": "https://www.moreyoga.co.uk/",
         "booking": "https://clients.mindbodyonline.com/classic/home?studioid=256292",
         "postcode": "NW"
       },
-      "MoreYoga Exmouth Market":
+      "MoreYoga Clapham Junction":
       {
-        "name": "More Yoga Exmouth Market",
-        "url": "http://www.morefit.co.uk/moreyoga/",
+        "name": "More Yoga Clapham Junction",
+        "url": "https://www.moreyoga.co.uk/",
         "booking": "https://clients.mindbodyonline.com/classic/home?studioid=256292",
-        "postcode": "EC"
+        "postcode": "SW"
+      },
+      "MoreYoga East Greenwich":
+      {
+        "name": "More Yoga East Greenwich",
+        "url": "https://www.moreyoga.co.uk/",
+        "booking": "https://clients.mindbodyonline.com/classic/home?studioid=256292",
+        "postcode": "SE"
+      },
+      "MoreYoga Forest Hill":
+      {
+        "name": "More Yoga Forest Hill",
+        "url": "https://www.moreyoga.co.uk/",
+        "booking": "https://clients.mindbodyonline.com/classic/home?studioid=256292",
+        "postcode": "SE"
       },
       "MoreYoga Finsbury Park":
       {
         "name": "More Yoga Finsbury Park",
-        "url": "http://www.morefit.co.uk/moreyoga/",
+        "url": "https://www.moreyoga.co.uk/",
         "booking": "https://clients.mindbodyonline.com/classic/home?studioid=256292",
         "postcode": "N"
+      },
+      "MoreYoga Greenwich Creekside":
+      {
+        "name": "More Yoga Greenwich Creekside",
+        "url": "https://www.moreyoga.co.uk/",
+        "booking": "https://clients.mindbodyonline.com/classic/home?studioid=256292",
+        "postcode": "SE"
+      },
+      "MoreYoga Hackney":
+      {
+        "name": "More Yoga Hackney",
+        "url": "https://www.moreyoga.co.uk/",
+        "booking": "https://clients.mindbodyonline.com/classic/home?studioid=256292",
+        "postcode": "E"
+      },
+      "MoreYoga Haggerston":
+      {
+        "name": "More Yoga Haggerston",
+        "url": "https://www.moreyoga.co.uk/",
+        "booking": "https://clients.mindbodyonline.com/classic/home?studioid=256292",
+        "postcode": "E"
+      },
+      "MoreYoga Harringay":
+      {
+        "name": "More Yoga Harringay",
+        "url": "https://www.moreyoga.co.uk/",
+        "booking": "https://clients.mindbodyonline.com/classic/home?studioid=256292",
+        "postcode": "N"
+      },
+      "MoreYoga Latimer Road":
+      {
+        "name": "More Yoga Latimer Road",
+        "url": "https://www.moreyoga.co.uk/",
+        "booking": "https://clients.mindbodyonline.com/classic/home?studioid=256292",
+        "postcode": "W"
+      },
+      "MoreYoga Lewisham":
+      {
+        "name": "More Yoga Lewisham",
+        "url": "https://www.moreyoga.co.uk/",
+        "booking": "https://clients.mindbodyonline.com/classic/home?studioid=256292",
+        "postcode": "SE"
       },
       "MoreYoga Old Street":
       {
         "name": "More Yoga Old Street",
-        "url": "http://www.morefit.co.uk/moreyoga/",
+        "url": "https://www.moreyoga.co.uk/",
         "booking": "https://clients.mindbodyonline.com/classic/home?studioid=256292",
         "postcode": "EC"
+      },
+      "MoreYoga Soho":
+      {
+        "name": "More Yoga Soho",
+        "url": "https://www.moreyoga.co.uk/",
+        "booking": "https://clients.mindbodyonline.com/classic/home?studioid=256292",
+        "postcode": "W"
+      },
+      "MoreYoga Stamford Brook":
+      {
+        "name": "More Yoga Stamford Brook",
+        "url": "https://www.moreyoga.co.uk/",
+        "booking": "https://clients.mindbodyonline.com/classic/home?studioid=256292",
+        "postcode": "W"
+      },
+      "MoreYoga Stoke Newington":
+      {
+        "name": "More Yoga Stoke Newington",
+        "url": "https://www.moreyoga.co.uk/",
+        "booking": "https://clients.mindbodyonline.com/classic/home?studioid=256292",
+        "postcode": "N"
+      },
+      "MoreYoga Stratford International":
+      {
+        "name": "More Yoga Stratford International",
+        "url": "https://www.moreyoga.co.uk/",
+        "booking": "https://clients.mindbodyonline.com/classic/home?studioid=256292",
+        "postcode": "E"
+      },
+      "MoreYoga Surrey Quays":
+      {
+        "name": "More Yoga Surrey Quays",
+        "url": "https://www.moreyoga.co.uk/",
+        "booking": "https://clients.mindbodyonline.com/classic/home?studioid=256292",
+        "postcode": "SE"
+      },
+      "MoreYoga Tower Bridge":
+      {
+        "name": "More Yoga Tower Bridge",
+        "url": "https://www.moreyoga.co.uk/",
+        "booking": "https://clients.mindbodyonline.com/classic/home?studioid=256292",
+        "postcode": "SE"
+      },
+      "MoreYoga Tulse Hill":
+      {
+        "name": "More Yoga Tulse Hill",
+        "url": "https://www.moreyoga.co.uk/",
+        "booking": "https://clients.mindbodyonline.com/classic/home?studioid=256292",
+        "postcode": "SE"
+      },
+      "MoreYoga Woolwich":
+      {
+        "name": "More Yoga Woolwich",
+        "url": "https://www.moreyoga.co.uk/",
+        "booking": "https://clients.mindbodyonline.com/classic/home?studioid=256292",
+        "postcode": "SE"
+      },
+      "MoreYoga Victoria":
+      {
+        "name": "More Yoga Victoria",
+        "url": "https://www.moreyoga.co.uk/",
+        "booking": "https://clients.mindbodyonline.com/classic/home?studioid=256292",
+        "postcode": "SW"
       }
     }
   },
@@ -550,19 +695,26 @@
         "booking": "https://clients.mindbodyonline.com/classic/home?studioid=1991",
         "postcode": "NW"
       },
-      "Covent Garden":
-      {
-        "name": "Triyoga Covent Garden",
-        "url": "http://www.triyoga.co.uk/",
-        "booking": "https://clients.mindbodyonline.com/classic/home?studioid=1991",
-        "postcode": "WC"
-      },
       "Chelsea":
       {
         "name": "Triyoga Chelsea",
         "url": "http://www.triyoga.co.uk/",
         "booking": "https://clients.mindbodyonline.com/classic/home?studioid=1991",
         "postcode": "SW"
+      },
+      "Ealing":
+      {
+        "name": "Triyoga Ealing",
+        "url": "http://www.triyoga.co.uk/",
+        "booking": "https://clients.mindbodyonline.com/classic/home?studioid=1991",
+        "postcode": "W"
+      },
+      "Shoreditch":
+      {
+        "name": "Triyoga Shoreditch",
+        "url": "http://www.triyoga.co.uk/",
+        "booking": "https://clients.mindbodyonline.com/classic/home?studioid=1991",
+        "postcode": "E"
       }
     }
   },
@@ -595,27 +747,17 @@
     }
   },
   {
-    "name": "Yogahaven",
+    "name": "Yogahaven Clapham",
     "provider": "MBO",
     "studioid": 12354,
     "redirectPage":  "",
     "timezone": "Europe/London",
-    "locales":
+    "locale":
     {
-      "Clapham":
-      {
-        "name": "Yogahaven Clapham",
-        "url": "http://www.yogahaven.co.uk/london-yoga/clapham/yoga",
-        "booking": "https://clients.mindbodyonline.com/classic/home?studioid=12354",
-        "postcode": "SW"
-      },
-      "Islington":
-      {
-        "name": "Yogahaven Islington",
-        "url": "http://www.yogahaven.co.uk/london-yoga/islington/yoga",
-        "booking": "https://clients.mindbodyonline.com/classic/home?studioid=12354",
-        "postcode": "N"
-      }
+      "name": "Yogahaven Clapham",
+      "url": "http://www.yogahaven.co.uk/london-yoga/clapham/yoga",
+      "booking": "https://clients.mindbodyonline.com/classic/home?studioid=12354",
+      "postcode": "SW"
     }
   },
   {

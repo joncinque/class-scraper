@@ -22,9 +22,9 @@
     "scrape"
   ],
   "dependencies": {
-    "chrome-remote-interface": "^0.24.5",
+    "chrome-remote-interface": "^0.27.1",
     "moment-timezone": "^0.5.13",
-    "phantomjs-prebuilt": "^2.1.15",
+    "phantomjs-prebuilt": "^2.1.16",
     "winston": "^2.3.1",
     "xmldom": "^0.1.27"
   },

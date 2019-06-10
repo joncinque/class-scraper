@@ -6,7 +6,7 @@ together with a toplevel, toplevel.js
 
 ## node
     $ sudo apt install -y python-software-properties
-    $ curl -sL https://deb.nodesource.com/setup_7.x | sudo -E bash -
+    $ curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
     $ sudo apt install -y nodejs
 
 ## Chrome
@@ -16,7 +16,7 @@ together with a toplevel, toplevel.js
     $ sudo apt install -y google-chrome-stable
 
 ## npm components
-    $ npm install phantomjs-prebuilt chrome-remote-interface moment xmldom winston
+    $ npm install
 
 # Repo Components
 

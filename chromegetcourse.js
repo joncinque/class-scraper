@@ -2,7 +2,8 @@
 
 const CDP = require('chrome-remote-interface');
 const fs = require('fs');
-const verbose = false;
+const verbose = true;
+const veryverbose = false;
 const logger = require('./logger');
 
 const GET_NEXT_WEEK = false;
@@ -29,7 +30,7 @@ exports.dumpCourseTable = (providerName, studioId, extraString) =>
         // Lots of pages get loaded, so give some extra time
         await sleep(10000);
 
-        if (verbose) {
+        if (veryverbose) {
           const {data} = await Page.captureScreenshot();
           fs.writeFileSync('page0.png', Buffer.from(data, 'base64'));
         }
@@ -57,7 +58,7 @@ exports.dumpCourseTable = (providerName, studioId, extraString) =>
           await Runtime.evaluate({expression: clickEvent});
           await Page.loadEventFired();
           topNode = await DOM.getDocument();
-          if (verbose) {
+          if (veryverbose) {
             const {data} = await Page.captureScreenshot();
             fs.writeFileSync('page1.png', Buffer.from(data, 'base64'));
           }
@@ -80,7 +81,7 @@ exports.dumpCourseTable = (providerName, studioId, extraString) =>
           await Runtime.evaluate({expression: clickEvent});
           await Page.loadEventFired();
           topNode = await DOM.getDocument();
-          if (verbose) {
+          if (veryverbose) {
             const {data} = await Page.captureScreenshot();
             fs.writeFileSync('page2.png', Buffer.from(data, 'base64'));
           }
@@ -101,7 +102,7 @@ exports.dumpCourseTable = (providerName, studioId, extraString) =>
           await Runtime.evaluate({expression: toggleEvent});
           await Page.loadEventFired();
           topNode = await DOM.getDocument();
-          if (verbose) {
+          if (veryverbose) {
             const {data} = await Page.captureScreenshot();
             fs.writeFileSync('page3.png', Buffer.from(data, 'base64'));
           }
@@ -115,7 +116,7 @@ exports.dumpCourseTable = (providerName, studioId, extraString) =>
           await Runtime.evaluate({expression: clickEvent});
           await Page.loadEventFired();
           topNode = await DOM.getDocument();
-          if (verbose) {
+          if (veryverbose) {
             const {data} = await Page.captureScreenshot();
             fs.writeFileSync('page6.png', Buffer.from(data, 'base64'));
           }
@@ -131,16 +132,16 @@ exports.dumpCourseTable = (providerName, studioId, extraString) =>
         });
         fs.writeFileSync(Math.abs(studioId) + '.html', tableHTML.outerHTML);
         logger.info('Dumped table for studio [' + studioId +']');
-        if (verbose) {
+        if (veryverbose) {
           const {data} = await Page.captureScreenshot();
           fs.writeFileSync('tablepage.png', Buffer.from(data, 'base64'));
         }
-        await client.close();
         client._notifier.emit('finish-dumping', client, Math.abs(studioId) + '.html');
       } catch (err) {
         if (err) {
           logger.error(err);
         }
+      } finally {
         await client.close();
       }
   }).on('error', (err) => {

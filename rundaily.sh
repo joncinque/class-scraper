@@ -17,12 +17,12 @@ echo "$pid"
 BASEDIR=$(dirname "$0")
 echo 'Gathering and scraping classes'
 mkdir -p "$BASEDIR/courses"
-coursefile="$BASEDIR/courses/courses_$(date -Idate).json"
-cmd="nodejs $BASEDIR/toplevel.js $BASEDIR/studios.json $coursefile"
+COURSEFILE="$BASEDIR/courses/courses_$(date -Idate).json"
+cmd="nodejs $BASEDIR/toplevel.js $BASEDIR/studios.json $COURSEFILE"
 echo "$cmd"
 eval "$cmd"
 
-if [[ -s $coursefile ]]
+if [[ -s $COURSEFILE ]]
 then
   echo 'All done, removing previous later values'
   mongo aggregate --eval 'db.courses.remove({start: { $gt: new Date() } })'
