@@ -18,7 +18,7 @@ BASEDIR=$(dirname "$0")
 echo 'Gathering and scraping classes'
 mkdir -p "$BASEDIR/courses"
 COURSEFILE="$BASEDIR/courses/courses_$(date -Idate).json"
-cmd="nodejs $BASEDIR/toplevel.js $BASEDIR/studios.json $COURSEFILE"
+cmd="node $BASEDIR/toplevel.js $BASEDIR/studios.json $COURSEFILE"
 echo "$cmd"
 eval "$cmd"
 

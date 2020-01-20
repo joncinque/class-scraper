@@ -5,6 +5,7 @@ const fs = require('fs');
 const verbose = true;
 const veryverbose = false;
 const logger = require('./logger');
+const userAgent = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36';
 
 const GET_NEXT_WEEK = false;
 
@@ -19,12 +20,14 @@ exports.dumpCourseTable = (providerName, studioId, extraString) =>
     port: 9222
   };
   return CDP(options, async (client) => {
-      const {Page, DOM, Runtime} = client;
+      const {Network, Page, DOM, Runtime} = client;
       try {
         logger.info('Starting studio id [' + studioId + ']')
         await Page.enable();
         await DOM.enable();
         await Runtime.enable();
+        await Network.enable();
+        await Network.setUserAgentOverride({userAgent});
         await Page.navigate({url: 'https://clients.mindbodyonline.com/classic/home?studioid='+studioId});
         await Page.loadEventFired();
         // Lots of pages get loaded, so give some extra time
