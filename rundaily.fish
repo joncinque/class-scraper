@@ -14,7 +14,7 @@ echo 'Gathering and scraping classes'
 mkdir -p "$basedir/courses"
 set date (date -Idate)
 set coursefile "$basedir/courses/courses_$date.json"
-set cmd "node $basedir/toplevel.js $basedir/studios_test.json $coursefile"
+set cmd "node $basedir/toplevel.js $basedir/studios.json $coursefile"
 echo "$cmd"
 eval "$cmd"
 
