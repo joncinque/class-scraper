@@ -23,14 +23,14 @@ async function upsertCourses(mongoUri, dbName, collectionName, coursesFile) {
   const ops = courses.map(x => {
     return {
       updateOne: {
-        filter: {name:x.name, start:x.start, studio: x.studio, postcode: x.postcode, timezone: x.timezone},
+        filter: {name:x.name, start: new Date(x.start), studio: x.studio, postcode: x.postcode, timezone: x.timezone},
         update: {$set: {
           name: x.name,
           teacher: x.teacher,
           room: x.room,
           style: x.style,
-          start: x.start,
-          end: x.end,
+          start: new Date(x.start),
+          end: new Date(x.end),
           locale: x.locale,
           studio: x.studio,
           url: x.url,
