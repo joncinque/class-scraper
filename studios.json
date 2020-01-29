@@ -19,7 +19,7 @@
     "studioid": 23194,
     "redirectPage":  "",
     "timezone": "Europe/London",
-    "locale": 
+    "locale":
     {
       "name": "Blue Cow Yoga",
       "url": "http://bluecowyoga.com/",
@@ -218,20 +218,6 @@
       "url": "https://www.thegaruda.net/",
       "booking": "https://clients.mindbodyonline.com/classic/home?studioid=24230",
       "postcode": "NW"
-    }
-  },
-  {
-    "name": "Good Vibes",
-    "provider": "MBO",
-    "studioid": 1769,
-    "redirectPage":  "https://clients.mindbodyonline.com/classic/mainclass?fl=true&tabID=7",
-    "timezone": "Europe/London",
-    "locale": 
-    {
-      "name": "Good Vibes Fitzrovia",
-      "url": "http://www.goodvibesfitness.co.uk/",
-      "booking": "https://clients.mindbodyonline.com/classic/home?studioid=1769",
-      "postcode": "W"
     }
   },
   {
@@ -571,7 +557,7 @@
     "studioid": 260779,
     "redirectPage":  "",
     "timezone": "Europe/London",
-    "locale": 
+    "locale":
     {
       "name": "One Yoga London",
       "url": "https://www.oneyogalondon.com/",
@@ -585,7 +571,7 @@
     "studioid": 441481,
     "redirectPage":  "",
     "timezone": "Europe/London",
-    "locale": 
+    "locale":
     {
       "name": "Paper Dress Yoga",
       "url": "https://www.paperdressyoga.co.uk/",
@@ -599,7 +585,7 @@
     "studioid": 4706,
     "redirectPage":  "",
     "timezone": "Europe/London",
-    "locale": 
+    "locale":
     {
       "name": "Power Yoga Company",
       "url": "http://thepoweryogaco.com/",
@@ -655,7 +641,7 @@
     "studioid": 26803,
     "redirectPage":  "",
     "timezone": "Europe/London",
-    "locales": 
+    "locales":
     {
       "Ada Street":
       {
@@ -679,7 +665,7 @@
     "studioid": 1991,
     "redirectPage":  "",
     "timezone": "Europe/London",
-    "locales": 
+    "locales":
     {
       "Soho":
       {
@@ -766,7 +752,7 @@
     "studioid": 139714,
     "redirectPage":  "",
     "timezone": "Europe/London",
-    "locale": 
+    "locale":
     {
       "name": "Yogahaven Richmond",
       "url": "http://www.yogahaven.co.uk/london-yoga/richmond/yoga",
@@ -808,7 +794,7 @@
     "studioid": 138949,
     "redirectPage":  "",
     "timezone": "Europe/London",
-    "locale": 
+    "locale":
     {
       "name": "Yogarise Peckham",
       "url": "http://www.yogarise.london/",

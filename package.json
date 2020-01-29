@@ -16,15 +16,15 @@
     "url": "https://github.com/joncinque/class-scraper/issues"
   },
   "keywords": [
-    "phantomjs",
     "chrome",
     "headless",
     "scrape"
   ],
   "dependencies": {
     "chrome-remote-interface": "^0.27.2",
+    "dotenv": "^8.2.0",
     "moment-timezone": "^0.5.27",
-    "phantomjs-prebuilt": "^2.1.16",
+    "mongodb": "^3.5.2",
     "winston": "^2.4.4",
     "xmldom": "^0.1.31"
   },

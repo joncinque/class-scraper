@@ -5,7 +5,7 @@ const moment = require('moment-timezone');
 const xmldom = require('xmldom');
 const logger = require('./logger');
 
-const PARSER_FUNCTIONS = 
+const PARSER_FUNCTIONS =
 {
   "MBO": parseMBOPage,
 };
@@ -100,7 +100,7 @@ function makeParseFirstChildFunction(recurseLevel, verbose)
 
 const PARSER_MAP =
 {
-  start: 
+  start:
   {
     required: true,
     column: [ 'Start time' ],
@@ -115,7 +115,7 @@ const PARSER_MAP =
   teacher:
   {
     required: true,
-    column: [ 'Teacher', 'Yoga + Pilates Mat Teacher', 'Staff' ], 
+    column: [ 'Teacher', 'Yoga + Pilates Mat Teacher', 'Staff' ],
     parser: makeParseFirstChildFunction(2, false),
   },
   duration:
@@ -348,7 +348,7 @@ function dbCourseOfWebCourse(webCourse, currentDate, studio)
 
   dbCourse.locale = webCourse['locale'];
   let localeInfo = {};
-  if (dbCourse.locale !== undefined && 
+  if (dbCourse.locale !== undefined &&
       studio.locales !== undefined &&
       studio.locales[dbCourse.locale] !== undefined)
   {
@@ -370,20 +370,17 @@ function dbCourseOfWebCourse(webCourse, currentDate, studio)
 function rowIsValid(row)
 {
   const STRIKETHROUGH_TAG_LOCATION = 1;
-  if (row.childNodes === undefined || 
+  if (row.childNodes === undefined ||
       row.childNodes === null ||
-      row.childNodes.length === 0)
-  {
+      row.childNodes.length === 0) {
     return false;
   }
   const firstCell = row.childNodes[0];
   // test if strikethrough tag exists
   if (firstCell.childNodes !== null &&
-      firstCell.childNodes.length > STRIKETHROUGH_TAG_LOCATION)
-  {
+      firstCell.childNodes.length > STRIKETHROUGH_TAG_LOCATION) {
     const tagCell = firstCell.childNodes[STRIKETHROUGH_TAG_LOCATION];
-    if (tagCell.tagName === 's' || tagCell.nodeName === 's')
-    {
+    if (tagCell.tagName === 's' || tagCell.nodeName === 's') {
       return false;
     }
   }
@@ -392,36 +389,28 @@ function rowIsValid(row)
 
 function checkAllLocalesPresent(courses, studio)
 {
-  if (studio.locales === undefined)
-  {
+  if (studio.locales === undefined) {
     // Only one locale, so we're OK
     return true;
   }
 
   let localePresentMap = {};
-  for (let locale in studio.locales)
-  {
+  for (let locale in studio.locales) {
     localePresentMap[locale] = false;
   }
 
-  for (let i = 0; i < courses.length; ++i)
-  {
+  for (let i = 0; i < courses.length; ++i) {
     let courseLocale = courses[i].locale;
-    if (localePresentMap.hasOwnProperty(courseLocale))
-    {
+    if (localePresentMap.hasOwnProperty(courseLocale)) {
       localePresentMap[courseLocale] = true;
-    }
-    else
-    {
+    } else {
       logger.error('Unknown locale found in course: [' + courseLocale + ']');
     }
   }
 
   let allPresent = true;
-  for (let locale in localePresentMap)
-  {
-    if (localePresentMap[locale] === false)
-    {
+  for (let locale in localePresentMap) {
+    if (localePresentMap[locale] === false) {
       allPresent = false;
       logger.error('Locale [' + locale + '] has no courses, double-check it');
     }
@@ -486,12 +475,9 @@ function parseMBOPage(htmlString, studio, callback)
   if (cleanString === '')
   {
     logger.error('Empty string found, retry ['+studio.name+'] [' + studio.studioid + ']');
-    if (callback !== undefined)
-    {
+    if (callback !== undefined) {
       return callback([]);
-    }
-    else
-    {
+    } else {
       return [];
     }
   }
@@ -504,8 +490,7 @@ function parseMBOPage(htmlString, studio, callback)
 
   const tableRows = dom.getElementsByTagName('tr');
   const courses = makeJSONCourses(columnMap, tableRows, studio);
-  if (callback !== undefined)
-  {
+  if (callback !== undefined) {
     callback(courses);
   }
   return courses;
@@ -515,12 +500,9 @@ exports.parsePage = (path, studio, callback) =>
 {
   return new Promise((resolve, reject) => {
     fs.readFile(path, 'utf8', (error, data) => {
-      if (error)
-      {
+      if (error) {
         reject(error);
-      }
-      else
-      {
+      } else {
         resolve(PARSER_FUNCTIONS[studio.provider](data, studio, callback));
       }
     });
@@ -545,7 +527,7 @@ if (require.main === module)
     "provider": "MBO",
     "studioid": 1991,
     "redirectPage":  "",
-    "locales": 
+    "locales":
     {
       "Soho":
       {
@@ -579,7 +561,7 @@ if (require.main === module)
     "provider": "MBO",
     "studioid": 1991,
     "redirectPage":  "",
-    "locale": 
+    "locale":
     {
       "name": "Blue Cow Yoga",
       "url": "http://bluecowyoga.com/",

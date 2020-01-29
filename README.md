@@ -1,22 +1,54 @@
 # class-scraper
-The class scraper is made up of two main components, getcourse.js and parsecourse.js, linked
-together with a toplevel, toplevel.js
+The class scraper is made up of two main components, getcourse.js and parsecourse.js,
+linked together with a toplevel, toplevel.js
 
 # Installing
 
 ## node
-    $ sudo apt install -y python-software-properties
-    $ curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
-    $ sudo apt install -y nodejs
+```bash
+sudo apt install -y python-software-properties
+curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
+sudo apt install -y nodejs
+```
 
-## Chrome
-    $ wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-    $ sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
-    $ sudo apt update
-    $ sudo apt install -y google-chrome-stable
+## Chrome or Chromium
+```bash
+wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
+sudo apt update
+sudo apt install -y google-chrome-stable
+```
 
 ## npm components
-    $ npm install
+```bash
+npm install
+```
+
+## Building mongo-tools dependency for ARM systems
+
+If using this on a Raspberry Pi, the mongo dependency is tricky to resolve since
+there are no native builds available for Raspbian.
+
+To build mongo-tools from source, you will need the appropriate go dependency
+and directory structure.
+
+* Set up go 1.12 (required by mongo-tools) for arm 6As
+```bash
+wget https://dl.google.com/go/go1.12.16.linux-armv6l.tar.gz
+sudo mkdir -p /opt/golang
+sudo tar -C /opt/golang/ -xzf go1.12.16.linux-armv6l.tar.gz
+sudo mv /opt/golang/go /opt/golang/go1.12
+```
+
+* Build mongo-tools
+
+```bash
+mkdir -p src/github.com/mongodb
+cd src/github.com/mongodb
+git clone https://github.com/mongodb/mongo-tools.git
+cd mongo-tools
+./build.sh
+```
 
 # Repo Components
 

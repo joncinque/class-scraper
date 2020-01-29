@@ -1,16 +1,18 @@
 'use strict';
 
 const fs = require('fs');
-const phantomjs = require('phantomjs-prebuilt');
 const EventEmitter = require('events');
 
-//const getcourse = require('./getcourse'); // used by phantom file
 const parsecourse = require('./parsecourse');
 const chromegetcourse = require('./chromegetcourse');
 const logger = require('./logger');
 
-const WEB_IMPORT = false;
-const MONGO_IMPORT = true;
+// DEPRECATED phantom dependencies
+//const phantomjs = require('phantomjs-prebuilt');
+//const getcourse = require('./getcourse'); // used by phantom file
+
+const WEB_IMPORT = true;
+const MONGO_IMPORT = false;
 
 let sep = '';
 function makeFileLogger(fileStream)
@@ -30,8 +32,8 @@ function makeFileLogger(fileStream)
     fileStream.write(', "room": "' + course.room + '"');
     fileStream.write(', "style": "' + course.style + '"');
     if (MONGO_IMPORT) {
-      fileStream.write(', "start": ISODate("' + course.start.toDate().toJSON() + '")');
-      fileStream.write(', "end": ISODate("' + course.end.toDate().toJSON() + '")');
+      fileStream.write(', "start": {"$date":{"$numberLong":"' + course.start.toDate().getTime() + '"}}');
+      fileStream.write(', "end": {"$date":{"$numberLong":"' + course.end.toDate().getTime() + '"}}');
     } else {
       fileStream.write(', "start": "' + course.start.toDate().toJSON() + '"');
       fileStream.write(', "end": "' + course.end.toDate().toJSON() + '"');
@@ -66,7 +68,7 @@ function makeFileCallback(studio, outputFileStream)
 function getCoursesPhantom(studio, callback)
 {
   const htmlFile = Math.abs(studio.studioid) + '.html';
-  return phantomjs.run('getcourse.js', 
+  return phantomjs.run('getcourse.js',
       studio.provider,
       studio.studioid,
       studio.redirectPage)
@@ -85,7 +87,7 @@ let getCoursesChrome = (studio, callback)=>
       studio.provider,
       studio.studioid,
       studio.redirectPage
-      ).once('finish-dumping', 
+      ).once('finish-dumping',
         parsecourse.makeParsePageEventEmitter(studio, callback));
 }
 
