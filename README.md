@@ -2,7 +2,7 @@
 The class scraper is made up of two main components, getcourse.js and parsecourse.js,
 linked together with a toplevel, toplevel.js
 
-# Installing
+# Requirements
 
 ## node
 ```bash
@@ -11,17 +11,9 @@ curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
 sudo apt install -y nodejs
 ```
 
-## Chrome or Chromium
+## Chromium
 ```bash
-wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
-sudo apt update
-sudo apt install -y google-chrome-stable
-```
-
-## npm components
-```bash
-npm install
+sudo apt install -y chromium-browser
 ```
 
 ## Building mongo-tools dependency for ARM systems
@@ -48,6 +40,20 @@ cd src/github.com/mongodb
 git clone https://github.com/mongodb/mongo-tools.git
 cd mongo-tools
 ./build.sh
+```
+
+# Setup
+
+## NPM packages
+```bash
+npm install
+```
+
+## Environment file
+```bash
+echo "MONGO_URI=mongodb://localhost" > .env
+echo "DB_NAME=classes_database" >> .env
+echo "COLLECTION=classes_collection" >> .env
 ```
 
 # Repo Components
@@ -85,3 +91,7 @@ try on.  For now, this only handles MBO pages.
 ## chromegetcourse.js
 Gets the pages sequentially using a local headless Chrome browser, faster and more
 modern version of scraping.
+
+## sendtomongo.js
+Utility for sending data to a MongoDB.  `mongoimport` can equally be used if the
+database is running on the scraping machine.
